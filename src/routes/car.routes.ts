@@ -136,15 +136,52 @@ router.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE a car
+// DELETE a car by ID as a path parameter
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+
+    if (!id) {
+      res.status(400).send('Invalid request: Car ID is required.');
+      return;
+    }
+
     const db = await initializeDatabase();
-    await db.run('DELETE FROM Cars WHERE id = ?', [id]);
+    const result = await db.run('DELETE FROM Cars WHERE id = ?', [id]);
+
+    if (result.changes === 0) {
+      res.status(404).send('No car found with the given ID.');
+      return;
+    }
+
     res.status(200).send('Car deleted successfully');
   } catch (error) {
-    console.error(error);
+    console.error('Error deleting car:', error);
+    res.status(500).send('Failed to delete car');
+  }
+});
+
+// DELETE a car by ID as a query parameter
+router.delete('/', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.query;
+
+    if (!id) {
+      res.status(400).send('Invalid request: Car ID is required.');
+      return;
+    }
+
+    const db = await initializeDatabase();
+    const result = await db.run('DELETE FROM Cars WHERE id = ?', [id]);
+
+    if (result.changes === 0) {
+      res.status(404).send('No car found with the given ID.');
+      return;
+    }
+
+    res.status(200).send('Car deleted successfully');
+  } catch (error) {
+    console.error('Error deleting car:', error);
     res.status(500).send('Failed to delete car');
   }
 });
