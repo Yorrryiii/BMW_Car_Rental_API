@@ -53,7 +53,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-// POST add a new user (with validation middleware)
+// POST (with validation middleware)
 router.post('/', validateUserFields, validateUniqueUser, async (req: Request, res: Response) => {
   try {
     const { name, email, phone } = req.body;
@@ -67,7 +67,7 @@ router.post('/', validateUserFields, validateUniqueUser, async (req: Request, re
   }
 });
 
-// PUT update a user (with validation middleware for full update)
+// PUT  (with validation middleware for full update)
 router.put('/:id', validateUserFields, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -124,35 +124,11 @@ router.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE a user by ID as a path parameter
+
+// DELETE a user by ID 
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
-    if (!id) {
-      res.status(400).send('Invalid request: User ID is required.');
-      return;
-    }
-
-    const db = await initializeDatabase();
-    const result = await db.run('DELETE FROM Users WHERE id = ?', [id]);
-
-    if (result.changes === 0) {
-      res.status(404).send('No user found with the given ID.');
-      return;
-    }
-
-    res.status(200).send('User deleted successfully');
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    res.status(500).send('Failed to delete user');
-  }
-});
-
-// DELETE a user by ID as a query parameter
-router.delete('/', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.query;
 
     if (!id) {
       res.status(400).send('Invalid request: User ID is required.');
