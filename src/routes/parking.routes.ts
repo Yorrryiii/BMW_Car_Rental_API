@@ -128,35 +128,11 @@ router.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
+
 // DELETE a parking location by ID as a path parameter
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-
-    if (!id) {
-      res.status(400).send('Invalid request: Parking location ID is required.');
-      return;
-    }
-
-    const db = await initializeDatabase();
-    const result = await db.run('DELETE FROM Parkings WHERE id = ?', [id]);
-
-    if (result.changes === 0) {
-      res.status(404).send('No parking location found with the given ID.');
-      return;
-    }
-
-    res.status(200).send('Parking location deleted successfully');
-  } catch (error) {
-    console.error('Error deleting parking location:', error);
-    res.status(500).send('Failed to delete parking location');
-  }
-});
-
-// DELETE a parking location by ID as a query parameter
-router.delete('/', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.query;
 
     if (!id) {
       res.status(400).send('Invalid request: Parking location ID is required.');
