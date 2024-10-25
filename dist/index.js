@@ -40,7 +40,7 @@ app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 // Routes
 app.use('/cars', car_routes_1.default); // Routes related to car rental service
 app.use('/users', user_routes_1.default); // Routes related to user management
-app.use('/parkingLocations', parkingLocation_routes_1.default); // Routes related to parking locations
+app.use('/parkings', parkingLocation_routes_1.default); // Routes related to parking locations
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
