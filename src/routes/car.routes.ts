@@ -12,7 +12,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 
     const db = await initializeDatabase();
 
-    // Start building the dynamic SQL query
+    // Building the dynamic SQL query
     let query = 'SELECT * FROM Cars WHERE 1=1';
     const params: any[] = [];
 
@@ -90,7 +90,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// PATCH update a car (partial updates)
+// PATCH (with partial updates capability)
 router.patch('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -136,7 +136,7 @@ router.patch('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE a car by ID as a path parameter
+// Delete a car by ID
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -161,29 +161,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
   }
 });
 
-// DELETE a car by ID as a query parameter
-router.delete('/', async (req: Request, res: Response) => {
-  try {
-    const { id } = req.query;
 
-    if (!id) {
-      res.status(400).send('Invalid request: Car ID is required.');
-      return;
-    }
 
-    const db = await initializeDatabase();
-    const result = await db.run('DELETE FROM Cars WHERE id = ?', [id]);
-
-    if (result.changes === 0) {
-      res.status(404).send('No car found with the given ID.');
-      return;
-    }
-
-    res.status(200).send('Car deleted successfully');
-  } catch (error) {
-    console.error('Error deleting car:', error);
-    res.status(500).send('Failed to delete car');
-  }
-});
 
 export default router;
