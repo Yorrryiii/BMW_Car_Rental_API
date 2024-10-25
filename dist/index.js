@@ -18,13 +18,14 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const database_1 = require("./database");
 const car_routes_1 = __importDefault(require("./routes/car.routes"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
-const parkingLocation_routes_1 = __importDefault(require("./routes/parkingLocation.routes"));
+const parking_routes_1 = __importDefault(require("./routes/parking.routes"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 // Middleware
 app.use((0, morgan_1.default)('dev')); // Logs HTTP requests
 app.use(body_parser_1.default.json()); // Parses incoming requests with JSON payloads
 app.use(body_parser_1.default.urlencoded({ extended: true })); // Parses incoming requests with URL-encoded payloads
+app.use(express_1.default.urlencoded({ extended: true })); //middleware to parse URL-encoded bodies
 // Initialize database on startup before any request
 app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -40,7 +41,7 @@ app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 // Routes
 app.use('/cars', car_routes_1.default); // Routes related to car rental service
 app.use('/users', user_routes_1.default); // Routes related to user management
-app.use('/parkings', parkingLocation_routes_1.default); // Routes related to parking locations
+app.use('/parkings', parking_routes_1.default); // Routes related to parking locations
 // Start Server
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
